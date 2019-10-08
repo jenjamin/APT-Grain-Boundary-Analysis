@@ -105,7 +105,12 @@ ThresholdSuitableCheck <-function(){
 }
 
 ThresholdCheckFunction <- function(){
+  print("In the next command, you will be asked to enter the distance up to which the first phase is definitely present.")
+  print("This distance should be lower than the value at which you think the enrichment begins.")
   GrainADistance<<-as.numeric(readline(prompt="Distance up to which the Grain/Phase A is definitely present: " ))
+  
+  print("In the next command, you will be asked to enter the distance after which the second phase is definitely present.")
+  print("This distance should be higher than the value at which you think the enrichment ends.")
   GrainBDistance<<-as.numeric(readline(prompt="Distance after which the Grain/Phase B is definitely present: " ))
   
   AdjustedPValue <- 1 - (1 - PValue)^(1/nrow(ElementCountDF))
@@ -168,6 +173,10 @@ ThresholdCheckFunction <- function(){
   ThresholdSuitableCheck()
   
 }
+
+print(paste0("This function will help determine the start and end of the grain boundary.  It does this based on the distribution of elements in the regions of the dataset that are contained in the ROI and are adjacent to the interface."))
+print(paste0("One should plot individual elements to determine which element strongly segregates to the interface."))
+print(paste0("Once this element has been identified, one should not plot anymore individual elements and move onto the next stage."))
 
 DeterminingElementForThresholdCalculations()
 
