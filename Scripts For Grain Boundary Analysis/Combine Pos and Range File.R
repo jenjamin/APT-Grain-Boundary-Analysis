@@ -59,22 +59,24 @@ PosFileRanger <- function(PosFile, RangeFilePath){
   rm(Ranges, RangesDF)
   
   #### Range pos####
-  Ion <<- data.frame(matrix(NA,
+  Ion <<- as.vector(matrix(NA,
                            nrow = nrow(PosFile)))
-  for(i in seq(1,nrow(RangeInfo),1)){
-    Name <- RangeInfo$Ion[i]
-    Ion <<- cbind(
-      Ion,
-      PosFile %>%
-        mutate(Name = ifelse(PosFile$m > RangeInfo$Start[i] &
-                               PosFile$m < RangeInfo$End[i],
-                             RangeInfo$Ion[i], NA)) %>%
-        select(Name))
+  
+  for (IonName in 1:length(RangeInfo$Ion)) {
+    IsIonName <- with(PosFile,
+                      m >= slice(RangeInfo, IonName)$Start &
+                        m <= slice(RangeInfo, IonName)$End)
+    IonLocations <- which(IsIonName == TRUE)
+    Ion <- replace(Ion, IonLocations, slice(RangeInfo, IonName)$Ion)
   }
-  Ion$Noise <- "Noise"
-  PosFile$Ion <- apply(Ion, 1, function(x) na.omit(x)[1])
+  
+  # Replace NA with "Noise"
+  Ion <- replace(Ion, which(is.na(Ion) == TRUE), "Noise")
+  
+  PosFile["Ion"] <- Ion
   assign("RangedPos", PosFile, envir=.GlobalEnv)
-  rm(i, Ion)
+  
+  rm(Ion)
 }
 
 
