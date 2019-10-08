@@ -5,7 +5,9 @@ Script for calculating Gibbsian interfacial excess values and compositions of in
 R will need to be installed as will the following packages:
 "tidyverse","PeriodicTable","InterpretMSSpectrum"
 
-Takes a .pos and .rrng file.  Will then combine the two and, with user input, calculate: 
+Takes a .pos and .rrng file.  The .pos file should contain an interface that is perpendicular to one of the "x", "y", or "z" directions.
+
+Will then combine the .pos and .rrng files and, with user input, calculate: 
 1) Where the interface starts and ends (based on the statistial distribution of elements in the regions adjacent to the interface)
 2) Gibbsian interfacial excess values
 3) Composition of the GB region
